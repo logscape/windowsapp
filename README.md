@@ -5,6 +5,7 @@ The Logscape App for Windows helps you monitor, search and visualize the health 
 ## Downloads 
 
 [WindowsApp-1.0.zip](https://github.com/logscape/windowsapp/raw/master/dist/WindowsApp-1.0.zip)	
+
 [WindowsApp-1.0-overrides.properties](https://www.google.com)
 
 ## QuicK Start
