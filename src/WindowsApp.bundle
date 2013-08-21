@@ -1,0 +1,172 @@
+<Bundle name="WindowsApp" version="1.0" system="false">
+  <status>UNINSTALLED</status>
+  <owner>info@logscape.com</owner>
+  <services>
+     <Service>
+      	<name>Win_ProcInfo</name>
+		    <resourceSelection>osName contains WINDOWS</resourceSelection>
+      	<fork>false</fork>
+      	<background>true</background>
+		    <instanceCount>-1</instanceCount>
+		    <pauseSeconds>600</pauseSeconds>
+      	<script>procInfo.vbs</script>
+    </Service>
+
+<!-- osName contains WINDOWS 2003-->
+
+     <Service>
+        <name>Win_SysEvt2k3</name>
+        <resourceSelection>  osName notContainsAny '2008,Vista,WINDOWS 7,LINUX,MAC' and osName contains 2003</resourceSelection>
+        <fork>true</fork>
+        <background>true</background>
+        <instanceCount>-1</instanceCount>
+        <pauseSeconds>60</pauseSeconds>
+        <script>evtW2k3.groovy evtSrc=System </script>
+    </Service>
+
+
+     <Service>
+        <name>Win_SysEvts</name>
+    <resourceSelection> osName contains WINDOWS and osName notContainsAny '2003' </resourceSelection>
+        <fork>true</fork>
+        <background>true</background>
+    <instanceCount>-1</instanceCount>
+    <pauseSeconds>60</pauseSeconds>
+        <script>eventLogger.groovy evtSrc=System </script>
+    </Service>
+ 
+
+     <Service>
+      	<name>Win_AppEvts</name>
+		    <resourceSelection> osName contains WINDOWS and osName notContainsAny '2003' </resourceSelection>
+      	<fork>true</fork>
+       	<background>true</background>
+	     	<instanceCount>-1</instanceCount>
+		    <pauseSeconds>60</pauseSeconds>
+      	<script>eventLogger.groovy evtSrc=Application </script>
+    </Service>
+
+     <Service>
+        <name>Win_AppEvt2k3</name>
+        <resourceSelection> osName notContainsAny '2008,Vista,WINDOWS 7,LINUX,MAC' and osName contains 2003</resourceSelection>
+        <fork>true</fork>
+        <background>true</background>
+        <instanceCount>-1</instanceCount>
+        <pauseSeconds>60</pauseSeconds>
+        <script>evtW2k3.groovy evtSrc=application </script>
+    </Service>
+
+     <Service>
+      	<name>Win_SecEvts</name>
+		<resourceSelection> osName contains WINDOWS and osName notContainsAny '2003' </resourceSelection>
+      	<fork>true</fork>
+      	<background>true</background>
+		<instanceCount>-1</instanceCount>
+		<pauseSeconds>60</pauseSeconds>
+      	<script>eventLogger.groovy evtSrc=Security </script>
+    </Service>
+
+     <Service>
+        <name>Win_SecEvt2k3</name>
+        <resourceSelection> osName notContainsAny '2008,Vista,WINDOWS 7,LINUX,MAC' and osName contains 2003</resourceSelection>
+        <fork>true</fork>
+        <background>true</background>
+        <instanceCount>-1</instanceCount>
+        <pauseSeconds>60</pauseSeconds>
+        <script>evtW2k3.groovy evtSrc=security </script>
+    </Service>
+
+ 
+     <Service>
+      	<name>Win_ProcPerf</name>
+		<resourceSelection>osName contains WINDOWS</resourceSelection>
+      	<fork>false</fork>
+      	<background>true</background>
+		<instanceCount>-1</instanceCount>
+		<pauseSeconds>0</pauseSeconds>
+      	<script>perfProc.vbs</script>
+    </Service>
+     <Service>
+      	<name>Win_ProcCounters</name>
+		<resourceSelection>osName contains WINDOWS</resourceSelection>
+      	<fork>false</fork>
+      	<background>true</background>
+		<instanceCount>-1</instanceCount>
+		<pauseSeconds>60</pauseSeconds>
+      	<script>perfCounters.vbs</script>
+    </Service>
+ 
+    <Service>
+      	<name>Win_PageFile</name>
+		<resourceSelection>osName contains WINDOWS</resourceSelection>
+      	<fork>false</fork>
+      	<background>true</background>
+		<instanceCount>-1</instanceCount>
+		<pauseSeconds>60</pauseSeconds>
+      	<script>swapUsage.vbs</script>
+    </Service>
+   <Service>
+      	<name>Win_CPUTime</name>
+		<resourceSelection>osName contains WINDOWS</resourceSelection>
+      	<fork>false</fork>
+      	<background>true</background>
+		<instanceCount>-1</instanceCount>
+		<pauseSeconds>60</pauseSeconds>
+      	<script>cpuTime.vbs</script>
+    </Service>
+   <Service>
+      	<name>Win_Mem</name>
+		<resourceSelection>osName contains WINDOWS</resourceSelection>
+      	<fork>false</fork>
+      	<background>true</background>
+		<instanceCount>-1</instanceCount>
+		<pauseSeconds>60</pauseSeconds>
+      	<script>memUtil.vbs</script>
+    </Service>
+   <Service>
+      	<name>Win_Disk</name>
+		<resourceSelection>osName contains WINDOWS</resourceSelection>
+      	<fork>false</fork>
+      	<background>true</background>
+		<instanceCount>-1</instanceCount>
+		<pauseSeconds>300</pauseSeconds>
+      	<script>diskUtil.vbs</script>
+    </Service>
+   <Service>
+      	<name>Win_DiskPerf</name>
+		<resourceSelection>osName contains WINDOWS</resourceSelection>
+      	<fork>false</fork>
+      	<background>true</background>
+		<instanceCount>-1</instanceCount>
+		<pauseSeconds>30</pauseSeconds>
+      	<script>diskPerf.vbs</script>
+    </Service>
+   <Service>
+      	<name>Win_Network</name>
+		<resourceSelection>osName contains WINDOWS</resourceSelection>
+      	<fork>false</fork>
+      	<background>true</background>
+		<instanceCount>-1</instanceCount>
+		<pauseSeconds>60</pauseSeconds>
+      	<script>networkUtil.vbs</script>
+    </Service>
+	<Service>
+		<name>Win_Processes</name>
+		<resourceSelection>osName contains WINDOWS AND osName notContains 2003</resourceSelection>
+		<fork>false</fork>
+		<background>true</background>
+		<instanceCount>-1</instanceCount>
+		<pauseSeconds>60</pauseSeconds>
+		<script>listProcesses.vbs</script>
+	</Service>
+	<Service>
+		<name>Win_Processes2k3</name>
+		<resourceSelection>osName contains WINDOWS AND osName contains 2003</resourceSelection>
+		<fork>false</fork>
+		<background>true</background>
+		<instanceCount>-1</instanceCount>
+		<pauseSeconds>60</pauseSeconds>
+		<script>listProcesses2k3.vbs</script>
+	</Service>
+  </services>
+</Bundle>

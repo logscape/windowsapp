@@ -1,0 +1,40 @@
+<>
+	<menuitem label="Performance" icon="downArrowIcon">
+		<menuitem label="Overview" type="dashboard" value="Windows Overview"/>
+		<menuitem label="CPU Summary" type="dashboard" value="Windows CPU Summary"/>
+		<menuitem label="Memory Summary" type="dashboard" value="Windows Memory Summary"/>
+		<menuitem label="Disk Summary" icon="downArrowIcon">
+			<menuitem label="Disk Utilization" type="dashboard" value="Windows Disk Summary"/>
+			<menuitem label="Disk Performance" type="dashboard" value="Windows - Disk Performance Summary"/>
+		</menuitem>		
+		<menuitem label="Network Summary" type="dashboard" value="Windows Network Summary"/>
+		<menuitem label="Alerts Triggered" type="search" value="Windows - Alerts Triggered"/>
+	</menuitem>
+	<menuitem label="Event Logs" icon="downArrowIcon">
+		<menuitem label="NT Event Logs" type="dashboard" value="Windows NT Event Logs"/>
+		<menuitem label="2008 Event Logs" type="dashboard" value="Windows 2008 Event Logs"/>
+	</menuitem>
+	<menuitem label="Specific Searches" icon="downArrowIcon">
+		<menuitem label="Generic Search" type="search" value="Generic Search"/>
+		<menuitem label="CPU Min Avg Max" type="search" value="Windows - CPU Min Avg Max by Hostname"/>
+		<menuitem label="Processes" type="search" value="Windows - Processes (Table)"/>
+	</menuitem>
+	<menuitem label="Documentation" icon="downArrowIcon">
+		<menuitem label="About" type="html" value="http://community.liquidlabs.co.uk/home/release-1-0/os-monitoring/windows"/>
+		<menuitem label="Windows" icon="downArrowIcon">
+			<menuitem label="Windows Help" type="html" value="http://windows.microsoft.com/en-GB/windows/help"/>
+			<menuitem label="Microsoft Support" type="html" value="http://support.microsoft.com/"/>
+		</menuitem>
+		<menuitem label="Logscape" icon="downArrowIcon">
+			<menuitem label="Logscape Support" type="html" value="http://support.liquidlabs.co.uk"/>
+			<menuitem label="Logscape Community" type="html" value="http://community.liquidlabs.co.uk"/>
+		</menuitem>
+	</menuitem>
+	<menuitem label="Admin" icon="downArrowIcon">
+		<menuitem label="Alerting" type="alerting" value=""/>
+		<menuitem label="Log Explorer" type="explorer" value=""/>
+		<menuitem label="Reports" type="reports" value=""/>
+		<menuitem label="Live Events" type="live" value=""/>
+		<menuitem label="Logout"/>
+	</menuitem>
+</>
