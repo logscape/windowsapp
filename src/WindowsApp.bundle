@@ -16,7 +16,7 @@
 
      <Service>
         <name>Win_SysEvt2k3</name>
-        <resourceSelection>  osName notContainsAny '2008,Vista,WINDOWS 7,LINUX,MAC' and osName contains 2003</resourceSelection>
+        <resourceSelection>  osName notContainsAny '2008,Vista,WINDOWS 7,LINUX,MAC' and osName containsAny '2003,XP'</resourceSelection>
         <fork>true</fork>
         <background>true</background>
         <instanceCount>-1</instanceCount>
@@ -27,7 +27,7 @@
 
      <Service>
         <name>Win_SysEvts</name>
-    <resourceSelection> osName contains WINDOWS and osName notContainsAny '2003' </resourceSelection>
+    <resourceSelection> osName contains WINDOWS and osName notContainsAny '2003,XP' </resourceSelection>
         <fork>true</fork>
         <background>true</background>
     <instanceCount>-1</instanceCount>
@@ -48,7 +48,7 @@
 
      <Service>
         <name>Win_AppEvt2k3</name>
-        <resourceSelection> osName notContainsAny '2008,Vista,WINDOWS 7,LINUX,MAC' and osName contains 2003</resourceSelection>
+        <resourceSelection> osName notContainsAny '2008,Vista,WINDOWS 7,LINUX,MAC' and osName containsAny '2003,XP'</resourceSelection>
         <fork>true</fork>
         <background>true</background>
         <instanceCount>-1</instanceCount>
@@ -58,7 +58,7 @@
 
      <Service>
       	<name>Win_SecEvts</name>
-		<resourceSelection> osName contains WINDOWS and osName notContainsAny '2003' </resourceSelection>
+		<resourceSelection> osName contains WINDOWS and osName notContainsAny '2003,XP' </resourceSelection>
       	<fork>true</fork>
       	<background>true</background>
 		<instanceCount>-1</instanceCount>
@@ -68,7 +68,7 @@
 
      <Service>
         <name>Win_SecEvt2k3</name>
-        <resourceSelection> osName notContainsAny '2008,Vista,WINDOWS 7,LINUX,MAC' and osName contains 2003</resourceSelection>
+        <resourceSelection> osName notContainsAny '2008,Vista,WINDOWS 7,LINUX,MAC' and osName containsAny '2003,XP'</resourceSelection>
         <fork>true</fork>
         <background>true</background>
         <instanceCount>-1</instanceCount>

@@ -16,7 +16,7 @@ The Logscape App for Windows helps you monitor, search and visualize the health 
 1. Download the zip below and upload it from the deployment page.
 2. Download the -override.properties, edit it accordingly to your deployment the override and upload it from the deployment page.
 3. Once both are uploaded, press DEPLOY on WindowsApp-1.0.zip (the application, not the override file).
-4. The Windows Application is now ready to use and can be selected on the login menu (provided that you have the rights to use it).
+4. The Windows Application is now ready to use and can be selected opening the "Windows Home" Workspace 
 
 
 # Overview 
