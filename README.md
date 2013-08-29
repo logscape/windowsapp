@@ -1,4 +1,4 @@
-# WindowsApp-1.0
+#WindowsApp-1.0
 
 The Logscape App for Windows helps you monitor, search and visualize the health of your Windows  servers. Charts report on system load, memory, network bandwidth and disk performance. 
 
@@ -7,7 +7,7 @@ The Logscape App for Windows helps you monitor, search and visualize the health 
  * [WindowsApp-1.0.zip](https://github.com/logscape/windowsapp/raw/master/dist/WindowsApp-1.0.zip)	
  * [WindowsApp-1.0-overrides.properties](https://www.google.com)
 
-## QuicK Start
+## Quick Start
 
 
 ![](docs/images/win_home_1.png)
