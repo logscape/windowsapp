@@ -13,7 +13,7 @@ Set objWMIService = GetObject("winmgmts:" _
 
 Set qList = objWMIService.ExecQuery ("SELECT PagesPerSec,AvailableMBytes,CommittedBytes,PercentCommittedBytesInUse FROM Win32_PerfFormattedData_PerfOS_Memory")
 For Each qItem in qList
-		WSCript.Echo Now() & sep & WshNetwork.ComputerName & sep & qItem.PagesPerSec & sep & qItem.AvailableMBytes & sep & qItem.CommittedBytes & sep & qItem.PercentCommittedBytesInUse
+		WSCript.Echo FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),3) & sep & WshNetwork.ComputerName & sep & qItem.PagesPerSec & sep & qItem.AvailableMBytes & sep & qItem.CommittedBytes & sep & qItem.PercentCommittedBytesInUse
 Next
 
 WScript.Quit

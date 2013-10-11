@@ -31,7 +31,7 @@ While True
 	For Each objItem in colItems
 
 		If filterCondition(objItem) = True then
-			logMessage = Now() & sep  
+			logMessage = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),3) & sep  
 			logMessage =  logMessage &  objItem.Name  & sep 
 			logMessage =  logMessage &  objItem.IDProcess  & sep 
 			logMessage =  logMessage &  objItem.ThreadCount & sep 

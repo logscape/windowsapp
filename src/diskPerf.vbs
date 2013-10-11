@@ -58,7 +58,7 @@ Sub log(data)
 		If filterCondition(objItem) = True Then
 			line = line  &   objItem.Name & sep
 			'if pidExists(pids,objItem.IDProcess) Then
-				line = Now()  & sep 
+				line = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),3)  & sep 
 				deviceId= objItem.Name
 				line = line & replace(deviceId," ","_") & sep 
 				
@@ -83,7 +83,6 @@ Sub log(data)
 	'	        Wscript.Echo Now()  & " " & objItem.Name & " -- " & objItem.PercentProcessorTime
 	'	End If 
 	    Next
-	    Wscript.Echo
 	    Wscript.Sleep 1000
 	Next
 End Sub

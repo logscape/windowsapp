@@ -7,7 +7,7 @@ Set colItems = objWMIService.ExecQuery(query,,48)
 logMessage = ""
 sep = "," 
 For Each objItem in colItems
-	logMessage = Now() & sep 
+	logMessage = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),3)  & sep 
 	logMessage = logMessage &  objItem.ProcessId & sep 
 	logMessage = logMessage &  objItem.CommandLine  
 	WScript.Echo logMessage

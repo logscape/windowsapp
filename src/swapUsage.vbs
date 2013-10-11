@@ -7,7 +7,7 @@ Set colItems = objWMIService.ExecQuery("Select * from Win32_PageFileUsage",,48)
 logMessage = ""
 sep = ","
 For Each objItem in colItems
-	logMessage = Now() & sep 
+	logMessage = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),3) & sep 
 	logMessage = logMessage  & WshNetwork.ComputerName   & sep 
     logMessage = logMessage  & objItem.AllocatedBaseSize  & sep 
     logMessage = logMessage  & objItem.CurrentUsage  & sep 
