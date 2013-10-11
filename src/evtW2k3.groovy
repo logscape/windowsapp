@@ -98,6 +98,29 @@ class Logger {
 	}
 }
 
+def isRecord(line){
+	tokens=line.split(",")
+	if(tokens.size() < 4){ return false}
+	if(tokens[0][0] != '"') {return false}
+	
+	return true
+}
+
+def isMultiLineEntry(line){
+	if (line.indexOf("-----") == 0){
+		return false
+	}
+	if (line.contains("Listing the") == true){
+		return false
+	}
+	
+	tokens=line.split(",")
+	if (tokens.size() < 3){
+		return true
+	}
+	return false
+}
+
 
 //def static fileHandles = [:]
 //Set Argument Defaults
@@ -116,37 +139,23 @@ INFO: No records available for the 'system' log with the specified criteria.
  
 */
 Logger logger=new Logger()
-
+bufferedLines=[]
 reader.eachLine(){ line -> 
-	if (line.contains("Script Host")){
-		
+	tokens=line.split(",")
+	//if (tokens.size() >=  4){
+	if (isRecord(line)){
+		if(bufferedLines.size()>0){
+			Logger.StdOut << new Date()  << " " << line; 
+			Logger.log(bufferedLines.join("\n"),new Date())
+			Logger.StdOut << "\n";		
+		}
+		bufferedLines=[]
+		bufferedLines.add(line)
 	}
-	else if (line.contains("ComputerName")){
-		
-	}
-
-	else if (line.contains("Listing the events in")){
-		
-	}	
-
-	else if (line.contains("All rights reserved")){
-		
-	}
-	else if (line.contains("---")){
-
-	}else if (line.replaceAll(" ","")==""){
-
-	}
-	else if (line.contains("INFO: No ")){
-		
-	}else if (line=="") {}
-
-	else {
-		//Logger.StdOut << new Date()  << " " << line; 
-		Logger.log(line,new Date())
-		Logger.StdOut << "\n";
-	}	
 	
+	if(isMultiLineEntry(line)){
+		bufferedLines.add(line)
+	}
 }
 
 
