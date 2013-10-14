@@ -145,7 +145,6 @@ reader.eachLine(){ line ->
 	//if (tokens.size() >=  4){
 	if (isRecord(line)){
 		if(bufferedLines.size()>0){
-			Logger.StdOut << new Date()  << " " << line; 
 			Logger.log(bufferedLines.join("\n"),new Date())
 			Logger.StdOut << "\n";		
 		}
@@ -154,8 +153,14 @@ reader.eachLine(){ line ->
 	}
 	
 	if(isMultiLineEntry(line)){
-		bufferedLines.add(line)
+		if(bufferedLines.size()>0){
+			bufferedLines.add(line)
+		}
 	}
+	
 }
 
-
+if(bufferedLines.size()>0){
+	Logger.log(bufferedLines.join("\n"),new Date())
+	Logger.StdOut << "\n";		
+}
