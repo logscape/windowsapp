@@ -14,7 +14,7 @@ Set objWMIService = GetObject("winmgmts:" _
 
 Set qList = objWMIService.ExecQuery ("SELECT Name,FreeMegaBytes,PercentFreeSpace FROM Win32_PerfFormattedData_PerfDisk_LogicalDisk")
 For Each qItem in qList
-	WSCript.Echo FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),3) & sep & WshNetwork.ComputerName & sep & qItem.Name & sep & qItem.FreeMegaBytes & sep & qItem.PercentFreeSpace
+	WSCript.Echo FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) & sep & WshNetwork.ComputerName & sep & qItem.Name & sep & qItem.FreeMegaBytes & sep & qItem.PercentFreeSpace
 Next
 
 WScript.Quit

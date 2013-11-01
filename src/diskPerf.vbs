@@ -58,7 +58,7 @@ Sub log(data)
 		If filterCondition(objItem) = True Then
 			line = line  &   objItem.Name & sep
 			'if pidExists(pids,objItem.IDProcess) Then
-				line = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),3)  & sep 
+				line = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4)  & sep 
 				deviceId= objItem.Name
 				line = line & replace(deviceId," ","_") & sep 
 				

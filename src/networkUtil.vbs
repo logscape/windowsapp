@@ -62,7 +62,7 @@ For Each objProcess in colProcess
 Next
 
 host = WshNetwork.ComputerName
-timestamp = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),3)
+timestamp = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4)
 
 For Each key In TimeStamp1.Keys
 

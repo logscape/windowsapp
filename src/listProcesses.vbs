@@ -105,7 +105,7 @@ For Each objProcess In colProcess
 	WScript.Sleep(10)
 Next
 
-timestamp = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),3) 
+timestamp = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) 
 
 For Each processId In TimeStamp1.Keys
 

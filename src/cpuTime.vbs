@@ -74,7 +74,7 @@ sub getSamples(count)
 			PercentInterruptTime = 100
 		End If
 
-		WSCript.Echo FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),3) & sep & WshNetwork.ComputerName & sep & PercentProcessorTime & sep & PercentUserTime & sep & PercentPrivilegedTime & sep & PercentInterruptTime
+		WSCript.Echo FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) & sep & WshNetwork.ComputerName & sep & PercentProcessorTime & sep & PercentUserTime & sep & PercentPrivilegedTime & sep & PercentInterruptTime
 
 
 		REM PercentProcessorTime = (1 - ((N2 - N1)/(D2-D1)))*100
