@@ -1,38 +1,31 @@
 Function filterCondition(obj)
 	ret = True
-
 	if obj.Name = "_Total"  Then
 		ret = False 
 	End If 
-
-
-
 	if Instr(obj.Name,"HarddiskVolume") <> 0  Then
 		ret = False 
 	End If 
-
 	filterCondition = ret
 End Function
 
 
 Function pidExists(dict,key)
-        ret = false
-        For each k in dict.Keys
-                val1 = k + 0
-                val2 = key + 0
-                if val1 = val2  Then
-                        ret = true
-                End If
-        Next
-        pidExists =ret
+	ret = false
+	For each k in dict.Keys
+		val1 = k + 0
+		val2 = key + 0
+		if val1 = val2  Then
+				ret = true
+		End If
+	Next
+	pidExists =ret
 End Function
 
 Function counters(service)
 	strComputer = "."
 	Set objWMIService = GetObject("winmgmts:\\" & strComputer & "\root\cimv2")
-
 	'service =  "Win32_PerfFormattedData_PerfProc_Process"
-
 	Set objRefresher = CreateObject("WbemScripting.SWbemRefresher")
 	Set rs = objRefresher.AddEnum (objWMIService,service).objectSet 
 '    (objWMIService, service).objectSet
@@ -43,47 +36,64 @@ Function counters(service)
 	Set counters = ret 
 End Function 
 
-
 Sub log(data)
+	Dim sep, AvgN, SleepSec
+	Dim DiskReadsPerSecAvg, DiskWritesPerSecAvg, DiskReadBytesPerSecAvg, DiskWriteBytesPerSecAvg, CurrentDiskQueueLengthAvg, PercentDiskReadTimeAvg, PercentDiskWriteTimeAvg, PercentIdleTimeAvg
+	sep = ","
+	avgN = 10: SleepSec = 0.5
 	Set colItems  = data.Item("resultSet") 
 	Set objRefresher = data.Item("refresher")
 	'Set qList = objWMIService.ExecQuery (" SELECT Name,CurrentDiskQueueLength,DiskBytesPerSec,PercentDiskReadTime,PercentDiskWriteTime,PercentDiskTime,
 	'PercentIdleTime FROM Win32_PerfFormattedData_PerfDisk_PhysicalDisk,PercentIdleTime Where Name <> '_Total'")
-	
-	sep = ";"
-	For i = 1 to 10 
-	    objRefresher.Refresh
-	    For Each objItem in colItems
+	objRefresher.Refresh
+	For Each objItem in colItems
+		DiskReadsPerSecAvg=0: DiskWritesPerSecAvg=0: DiskReadBytesPerSecAvg=0: DiskWriteBytesPerSecAvg=0
+		CurrentDiskQueueLengthAvg=0.0: PercentDiskReadTimeAvg=0.0: PercentDiskWriteTimeAvg=0.0: PercentIdleTimeAvg=0.0
 		line = "" 
 		If filterCondition(objItem) = True Then
-			line = line  &   objItem.Name & sep
+			line = line & objItem.Name & sep
 			'if pidExists(pids,objItem.IDProcess) Then
-				line = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4)  & sep 
-				deviceId= objItem.Name
-				line = line & replace(deviceId," ","_") & sep 
-				
-				' Read  / Write Operations
-				line = line & objItem.DiskReadsPerSec & sep 
-				line = line & objItem.DiskWritesPerSec & sep 
-
-				' Read / Write Bytes / per sec 
-				line = line & objItem.DiskReadBytesPerSec & sep 
-				line = line & objItem.DiskWriteBytesPerSec & sep 				
-
-
-				' Percentage Performance Counters
-				line = line & objItem.CurrentDiskQueueLength & sep 
-				line = line & objItem.PercentDiskReadTime & sep 
-				line = line & objItem.PercentDiskWriteTime   & sep 
-				line = line & objItem.PercentIdleTime 
-				WScript.echo line 
+			line = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) & sep 
+			deviceId= objItem.Name
+			line = line & replace(deviceId," ","_") & sep 
+			'ak-- average values over AvgN*SleepSec sec interval, taking AvgN readings
+			For i = 1 to AvgN
+				objRefresher.Refresh
+				DiskReadsPerSecAvg = DiskReadsPerSecAvg + objItem.DiskReadsPerSec
+				DiskWritesPerSecAvg = DiskWritesPerSecAvg + objItem.DiskWritesPerSec
+				DiskReadBytesPerSecAvg = DiskReadBytesPerSecAvg + objItem.DiskReadBytesPerSec
+				DiskWriteBytesPerSecAvg = DiskWriteBytesPerSecAvg + objItem.DiskWriteBytesPerSec
+				CurrentDiskQueueLengthAvg = CurrentDiskQueueLengthAvg + objItem.CurrentDiskQueueLength
+				PercentDiskReadTimeAvg = PercentDiskReadTimeAvg + objItem.PercentDiskReadTime
+				PercentDiskWriteTimeAvg = PercentDiskWriteTimeAvg + objItem.PercentDiskWriteTime
+				PercentIdleTimeAvg = PercentIdleTimeAvg + objItem.PercentIdleTime
+				Wscript.Sleep 1000*SleepSec
+			Next
+			DiskReadsPerSecAvg = DiskReadsPerSecAvg / AvgN
+			DiskWritesPerSecAvg = DiskWritesPerSecAvg / AvgN
+			DiskReadBytesPerSecAvg = DiskReadBytesPerSecAvg / AvgN
+			DiskWriteBytesPerSecAvg = DiskWriteBytesPerSecAvg / AvgN
+			CurrentDiskQueueLengthAvg = CurrentDiskQueueLengthAvg / AvgN
+			PercentDiskReadTimeAvg = PercentDiskReadTimeAvg / AvgN
+			PercentDiskWriteTimeAvg = PercentDiskWriteTimeAvg / AvgN
+			PercentIdleTimeAvg = PercentIdleTimeAvg / AvgN
+			' Read  / Write Operations
+			line = line & DiskReadsPerSecAvg & sep 
+			line = line & DiskWritesPerSecAvg & sep 
+			' Read / Write Bytes / per sec 
+			line = line & DiskReadBytesPerSecAvg & sep 
+			line = line & DiskWriteBytesPerSecAvg & sep 				
+			' Percentage Performance Counters
+			line = line & CurrentDiskQueueLengthAvg & sep 
+			line = line & PercentDiskReadTimeAvg & sep 
+			line = line & PercentDiskWriteTimeAvg   & sep 
+			line = line & PercentIdleTimeAvg 
+			WScript.echo line 
 			'End If 
 		End If 
 	'	if objItem.PercentProcessorTime > 0 Then
 	'	        Wscript.Echo Now()  & " " & objItem.Name & " -- " & objItem.PercentProcessorTime
 	'	End If 
-	    Next
-	    Wscript.Sleep 1000
 	Next
 End Sub
 

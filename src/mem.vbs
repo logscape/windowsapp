@@ -1,14 +1,13 @@
 Function filterCondition(obj)
 	ret = True
 
-	if obj.Name = "_Total"  Then
+	if obj.Name = "_Total" or obj.Name = "Idle"  Then
 		ret = False 
 	End If 
 
 
 	filterCondition = ret
 End Function
-
 
 Function pidExists(dict,key)
         ret = false
@@ -38,13 +37,12 @@ Function counters(service)
 	Set counters = ret 
 End Function 
 
-
 Sub log(data,pids)
 	Set colItems  = data.Item("resultSet") 
 	Set objRefresher = data.Item("refresher")
 
 	sep = ";"
-	For i = 1 to 2 
+	'For i = 1 to 2 
 	    objRefresher.Refresh
 	    For Each objItem in colItems
 		line = "" 
@@ -66,9 +64,9 @@ Sub log(data,pids)
 	'	        Wscript.Echo Now()  & " " & objItem.Name & " -- " & objItem.PercentProcessorTime
 	'	End If 
 	    Next
-	    Wscript.Echo
-	    Wscript.Sleep 5000
-	Next
+	'    Wscript.Echo
+	'    Wscript.Sleep 5000
+	'Next
 End Sub
 
 Function dotnetpids(data)
@@ -87,6 +85,5 @@ End Function
 Set clrData = counters("Win32_PerfFormattedData_NETFramework_NETCLRMemory") 
 Set pids = dotnetpids(clrData) 
 Set data = counters("Win32_PerfFormattedData_PerfProc_Process")
-log data,pids
 
-
+log data, pids

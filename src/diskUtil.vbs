@@ -1,20 +1,68 @@
-Option Explicit
-Dim objWMIService, objProcess, colProcess, qList
-Dim strComputer, strList,qItem,WshNetWork
-Dim sep
+Function filterCondition(obj)
+	ret = True
+	if obj.Name = "_Total"  Then
+		ret = False 
+	End If 
+	if Instr(obj.Name,"HarddiskVolume") <> 0  Then
+		ret = False 
+	End If 
+	filterCondition = ret
+End Function
 
-strComputer = "."
-Set WshNetwork = WScript.CreateObject("WScript.Network")
+Function counters(service)
+	strComputer = "."
+	Set objWMIService = GetObject("winmgmts:\\" & strComputer & "\root\cimv2")
+	Set objRefresher = CreateObject("WbemScripting.SWbemRefresher")
+	Set rs = objRefresher.AddEnum (objWMIService,service).objectSet 
+	Set ret = CreateObject("Scripting.Dictionary")
+	ret.Add "service",service
+	ret.Add "resultSet", rs
+	ret.Add "refresher",objRefresher
+	Set counters = ret 
+End Function 
 
-sep = ","
+REM Set qList = objWMIService.ExecQuery ("SELECT Name,FreeMegaBytes,PercentFreeSpace FROM Win32_PerfFormattedData_PerfDisk_LogicalDisk")
+REM For Each qItem in qList
+	REM WSCript.Echo FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) & sep & WshNetwork.ComputerName & sep & qItem.Name & sep & qItem.FreeMegaBytes & sep & qItem.PercentFreeSpace
+REM Next
 
-Set objWMIService = GetObject("winmgmts:" _
-& "{impersonationLevel=impersonate}!\\" _
-& strComputer & "\root\cimv2")
+REM WScript.Quit
 
-Set qList = objWMIService.ExecQuery ("SELECT Name,FreeMegaBytes,PercentFreeSpace FROM Win32_PerfFormattedData_PerfDisk_LogicalDisk")
-For Each qItem in qList
-	WSCript.Echo FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) & sep & WshNetwork.ComputerName & sep & qItem.Name & sep & qItem.FreeMegaBytes & sep & qItem.PercentFreeSpace
-Next
+Sub log(data)
+	Dim sep, AvgN, SleepSec
+	Dim FreeMegaBytesAvg, PercentFreeSpaceAvg
+	sep = ","
+	avgN = 3: SleepSec = 0.3
+	Set colItems  = data.Item("resultSet") 
+	Set objRefresher = data.Item("refresher")
+	'ak-- average values over AvgN*SleepSec sec interval, taking AvgN readings
+	objRefresher.Refresh
+	For Each objItem in colItems
+		FreeMegaBytesAvg = 0.0: PercentFreeSpaceAvg = 0.0
+		line = "" 
+		If filterCondition(objItem) = True Then
+			line = line & objItem.Name & sep
+			line = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) & sep 
+			deviceId= objItem.Name
+			line = line & replace(deviceId," ","_") & sep 
+			'ak-- average values over AvgN*SleepSec sec interval, taking AvgN readings
+			For i = 1 to AvgN
+				objRefresher.Refresh
+				FreeMegaBytesAvg = FreeMegaBytesAvg + objItem.FreeMegaBytes
+				PercentFreeSpaceAvg = PercentFreeSpaceAvg + objItem.PercentFreeSpace
+				Wscript.Sleep 1000*SleepSec
+			Next
+			FreeMegaBytesAvg = FreeMegaBytesAvg / AvgN
+			PercentFreeSpaceAvg = PercentFreeSpaceAvg / AvgN
+			line = line & FreeMegaBytesAvg   & sep 
+			line = line & PercentFreeSpaceAvg
+			WScript.echo line 
+		End If
+	Next
+End Sub	
 
-WScript.Quit
+
+REM ' Main
+Set data = counters("Win32_PerfFormattedData_PerfDisk_LogicalDisk")
+
+log data

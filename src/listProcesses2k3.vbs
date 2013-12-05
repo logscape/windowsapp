@@ -10,7 +10,7 @@ Set objWMIService = GetObject("winmgmts:" _
 & strComputer & "\root\cimv2")
 
 If IsEmpty(waitProcesses) Then
-	waitProcesses = 3000
+	waitProcesses = 100
 End If
 
 Set TimeStamp1 = CreateObject("Scripting.Dictionary")
@@ -25,7 +25,7 @@ Set colProcess = objWMIService.ExecQuery("SELECT Name,IDProcess,TimeStamp_Sys100
 For Each objProcess in colProcess
 	TimeStamp1.Add objProcess.IDProcess, objProcess.TimeStamp_Sys100NS
 	PercentProcessorTime1.Add objProcess.IDProcess, objProcess.PercentProcessorTime
-	WScript.Sleep(10)
+'	WScript.Sleep(10)
 Next
 
 WScript.Sleep(waitProcesses)
@@ -46,8 +46,7 @@ For Each objProcess in colProcess
 	PercentProcessorTime2.Add objProcess.IDProcess, objProcess.PercentProcessorTime
 	'ElapsedTime.Add objProcess.IDProcess, objProcess.ElapsedTime
 	PrivateBytes.Add objProcess.IDProcess, objProcess.PrivateBytes
-	
-	WScript.Sleep(10)
+'	WScript.Sleep(10)
 Next
 
 Set colProcess = objWMIService.ExecQuery("SELECT PercentCommittedBytesInUse FROM Win32_PerfFormattedData_PerfOS_Memory")
@@ -103,7 +102,7 @@ For Each objProcess In colProcess
 	End If
 	ProcessOwner.Add PID, Domain & "\" & User
 	
-	WScript.Sleep(10)
+'	WScript.Sleep(10)
 Next
 
 timestamp = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) 
@@ -112,31 +111,30 @@ For Each processId In TimeStamp1.Keys
 
 	If processId <> 0 AND ProcessPriority.Item(processId) <> "" Then
 
-			ProcPct = -1
-			If (DeltaProcTotal > 0) Then
-				ProcPct = Abs(PercentProcessorTime2.Item(processId) - PercentProcessorTime1.Item(processId)) / DeltaProcTotal
-			Else
-				ProcPct = 0
-			End If
-			If ProcPct < 0 Then
-				ProcPct = 0
-			End If
-			If ProcPct > 1 Then
-				ProcPct = 1
-			End If
-			ProcPct = Round(UsedProc * ProcPct,2)
-			
-			If TotalMemory = 0 Then
-				MemPct = 0
-			Else
-				MemPct = Round(PrivateBytes.Item(processId) / TotalMemory * UsedMem, 2)
-			End If
-			
-			if ProcPct > 0.05 Then 			
-				WSCript.Echo timestamp & sep & host & sep & ProcessName.Item(processId) & sep & processId & sep & ProcPct & sep & MemPct & sep & ProcessPriority.Item(processId) & sep & ProcessOwner.Item(processId) '& sep & ElapsedTime.Item(processId) & sep & objP.CommandLine
-			End If				
-			
-			WScript.Sleep(10)
+		ProcPct = -1
+		If (DeltaProcTotal > 0) Then
+			ProcPct = Abs(PercentProcessorTime2.Item(processId) - PercentProcessorTime1.Item(processId)) / DeltaProcTotal
+		Else
+			ProcPct = 0
+		End If
+		If ProcPct < 0 Then
+			ProcPct = 0
+		End If
+		If ProcPct > 1 Then
+			ProcPct = 1
+		End If
+		ProcPct = Round(UsedProc * ProcPct,2)
+		
+		If TotalMemory = 0 Then
+			MemPct = 0
+		Else
+			MemPct = Round(PrivateBytes.Item(processId) / TotalMemory * UsedMem, 2)
+		End If
+		
+		if ProcPct > 0.05 Then 			
+			WSCript.Echo timestamp & sep & host & sep & ProcessName.Item(processId) & sep & processId & sep & ProcPct & sep & MemPct & sep & ProcessPriority.Item(processId) & sep & ProcessOwner.Item(processId) '& sep & ElapsedTime.Item(processId) & sep & objP.CommandLine
+		End If				
+'		WScript.Sleep(10)
 	
 	End If
 	

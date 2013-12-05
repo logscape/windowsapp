@@ -41,5 +41,5 @@ While True
 			WScript.Echo logMessage
 		End If 
 	Next
-	WScript.Sleep 5000
+	WScript.Sleep 60000
 Wend 

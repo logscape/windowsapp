@@ -16,64 +16,64 @@
 
      <Service>
         <name>Win_SysEvt2k3</name>
-        <resourceSelection>  osName notContainsAny '2008,Vista,WINDOWS 7,LINUX,MAC' and osName containsAny '2003,XP'</resourceSelection>
-        <fork>true</fork>
+        <resourceSelection>osName contains WINDOWS and osName containsAny '2003,XP'</resourceSelection>
+        <fork>false</fork>
         <background>true</background>
         <instanceCount>-1</instanceCount>
         <pauseSeconds>60</pauseSeconds>
-        <script>evtW2k3.groovy evtSrc=System </script>
+        <script>QueryEventLogs.vbs System</script>
     </Service>
 
 
      <Service>
         <name>Win_SysEvts</name>
-    <resourceSelection> osName contains WINDOWS and osName notContainsAny '2003,XP' </resourceSelection>
-        <fork>true</fork>
+    <resourceSelection>osName contains WINDOWS and osName notContainsAny '2003,XP'</resourceSelection>
+        <fork>false</fork>
         <background>true</background>
     <instanceCount>-1</instanceCount>
     <pauseSeconds>60</pauseSeconds>
-        <script>eventLogger.groovy evtSrc=System </script>
+        <script>QueryEventLogs.vbs System</script>
     </Service>
  
 
      <Service>
       	<name>Win_AppEvts</name>
-		    <resourceSelection> osName contains WINDOWS and osName notContainsAny '2003' </resourceSelection>
-      	<fork>true</fork>
+		    <resourceSelection>osName contains WINDOWS and osName notContainsAny '2003,XP'</resourceSelection>
+      	<fork>false</fork>
        	<background>true</background>
 	     	<instanceCount>-1</instanceCount>
 		    <pauseSeconds>60</pauseSeconds>
-      	<script>eventLogger.groovy evtSrc=Application </script>
+      	<script>QueryEventLogs.vbs Application</script>
     </Service>
 
      <Service>
         <name>Win_AppEvt2k3</name>
-        <resourceSelection> osName notContainsAny '2008,Vista,WINDOWS 7,LINUX,MAC' and osName containsAny '2003,XP'</resourceSelection>
-        <fork>true</fork>
+        <resourceSelection>osName contains WINDOWS and osName containsAny '2003,XP'</resourceSelection>
+        <fork>false</fork>
         <background>true</background>
         <instanceCount>-1</instanceCount>
         <pauseSeconds>60</pauseSeconds>
-        <script>evtW2k3.groovy evtSrc=application </script>
+        <script>QueryEventLogs.vbs Application</script>
     </Service>
 
      <Service>
       	<name>Win_SecEvts</name>
-		<resourceSelection> osName contains WINDOWS and osName notContainsAny '2003,XP' </resourceSelection>
-      	<fork>true</fork>
+		<resourceSelection>osName contains WINDOWS and osName notContainsAny '2003,XP'</resourceSelection>
+      	<fork>false</fork>
       	<background>true</background>
 		<instanceCount>-1</instanceCount>
 		<pauseSeconds>60</pauseSeconds>
-      	<script>eventLogger.groovy evtSrc=Security </script>
+      	<script>QueryEventLogs.vbs Security</script>
     </Service>
 
      <Service>
         <name>Win_SecEvt2k3</name>
-        <resourceSelection> osName notContainsAny '2008,Vista,WINDOWS 7,LINUX,MAC' and osName containsAny '2003,XP'</resourceSelection>
-        <fork>true</fork>
+        <resourceSelection>osName contains WINDOWS and osName containsAny '2003,XP'</resourceSelection>
+        <fork>false</fork>
         <background>true</background>
         <instanceCount>-1</instanceCount>
         <pauseSeconds>60</pauseSeconds>
-        <script>evtW2k3.groovy evtSrc=security </script>
+        <script>QueryEventLogs.vbs Security</script>
     </Service>
 
  
@@ -102,7 +102,7 @@
       	<fork>false</fork>
       	<background>true</background>
 		<instanceCount>-1</instanceCount>
-		<pauseSeconds>60</pauseSeconds>
+		<pauseSeconds>300</pauseSeconds>
       	<script>swapUsage.vbs</script>
     </Service>
    <Service>
@@ -138,7 +138,7 @@
       	<fork>false</fork>
       	<background>true</background>
 		<instanceCount>-1</instanceCount>
-		<pauseSeconds>30</pauseSeconds>
+		<pauseSeconds>60</pauseSeconds>
       	<script>diskPerf.vbs</script>
     </Service>
    <Service>
@@ -152,7 +152,7 @@
     </Service>
 	<Service>
 		<name>Win_Processes</name>
-		<resourceSelection> osName contains WINDOWS and osName notContainsAny '2003,XP' </resourceSelection>
+		<resourceSelection>osName contains WINDOWS AND osName notContainsAny '2003,XP'</resourceSelection>
 		<fork>false</fork>
 		<background>true</background>
 		<instanceCount>-1</instanceCount>
@@ -161,7 +161,7 @@
 	</Service>
 	<Service>
 		<name>Win_Processes2k3</name>
-		<resourceSelection>osName notContainsAny '2008,Vista,WINDOWS 7,LINUX,MAC' and osName containsAny '2003,XP'</resourceSelection>
+		<resourceSelection>osName contains WINDOWS AND osName containsAny '2003,XP'</resourceSelection>
 		<fork>false</fork>
 		<background>true</background>
 		<instanceCount>-1</instanceCount>

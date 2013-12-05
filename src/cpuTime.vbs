@@ -1,32 +1,35 @@
+' cputime.vbs
+'ak-- 26/11/13 -- modified to improve averaging and reduce frequency/amount of log data
 
-
+Dim objInst
+Dim pppAvg, pptAvg, putAvg, pitAvg
+Dim cName, sep, strComputer
+Dim numOfSamples, intervalSecs, numberOfIntervals
 
 sub getSamples(count)
 	Set objService = GetObject( _
 		"Winmgmts:{impersonationlevel=impersonate}!\Root\Cimv2")
-
 		
-		
+	pppAvg=0.0: pptAvg=0.0: putAvg=0.0: pitAvg=0.0
 	For i = 1 to count
-		Set objInstance1 = objService.Get( _
+		Set objInst = objService.Get( _
 			"Win32_PerfRawData_PerfOS_Processor.Name='_Total'")
-		N1   = objInstance1.PercentProcessorTime
-		D1   = objInstance1.TimeStamp_Sys100NS
-		PUT1 = objInstance1.PercentUserTime
-		PPT1 = objInstance1.PercentPrivilegedTime
-		PIT1 = objInstance1.PercentInterruptTime
+		N1   = objInst.PercentProcessorTime
+		D1   = objInst.TimeStamp_Sys100NS
+		PUT1 = objInst.PercentUserTime
+		PPT1 = objInst.PercentPrivilegedTime
+		PIT1 = objInst.PercentInterruptTime
 
-	'Sleep for two seconds = 2000 ms
-		WScript.Sleep(2000)
+	'Sleep for 200 ms
+		WScript.Sleep(200)
 
-		Set objInstance2 = objService.Get( _
+		Set objInst = objService.Get( _
 			"Win32_PerfRawData_PerfOS_Processor.Name='_Total'")
-		N2 = objInstance2.PercentProcessorTime
-		D2 = objInstance2.TimeStamp_Sys100NS
-		PUT2 = objInstance2.PercentUserTime
-		PPT2 = objInstance2.PercentPrivilegedTime
-		PIT2 = objInstance2.PercentInterruptTime
-		
+		N2 = objInst.PercentProcessorTime
+		D2 = objInst.TimeStamp_Sys100NS
+		PUT2 = objInst.PercentUserTime
+		PPT2 = objInst.PercentPrivilegedTime
+		PIT2 = objInst.PercentInterruptTime
 		
 		DeltaTime = Abs(CDbl(D2 - D1))
 
@@ -34,8 +37,7 @@ sub getSamples(count)
 		PercentUserTime= -1
 		PercentPrivilegedTime = -1
 		PercentInterruptTime = -1
- 
-		
+ 		
 		If DeltaTime > 0 Then
 			PercentProcessorTime = Round((1 - ( N2 - N1) / (D2-D1)) * 100, 2)
 			PercentUserTime = Round((Abs(PUT2 - PUT1) / (D2-D1)) * 100, 2)
@@ -47,8 +49,7 @@ sub getSamples(count)
 	' and obtain the formula to calculate the meaningful data. 
 	' CounterType - PERF_100NSEC_TIMER_INV
 	' Formula - (1- ((N2 - N1) / (D2 - D1))) x 100
-
-		If PercentProcessorTime < 0 Then
+	If PercentProcessorTime < 0 Then
 			PercentProcessorTime = 0
 		End If
 		If PercentUserTime < 0 Then
@@ -74,28 +75,33 @@ sub getSamples(count)
 			PercentInterruptTime = 100
 		End If
 
-		WSCript.Echo FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) & sep & WshNetwork.ComputerName & sep & PercentProcessorTime & sep & PercentUserTime & sep & PercentPrivilegedTime & sep & PercentInterruptTime
+		pppAvg = pptAvg + PercentProcessorTime
+		putAvg = putAvg + PercentUserTime
+		pptAvg = pptAvg + PercentPrivilegedTime
+		pitAvg = pitAvg + PercentInterruptTime
 
+		'WSCript.Echo FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) & sep & cName & sep & PercentProcessorTime & sep & PercentUserTime & sep & PercentPrivilegedTime & sep & PercentInterruptTime
 
-		REM PercentProcessorTime = (1 - ((N2 - N1)/(D2-D1)))*100
+		REM  PercentProcessorTime = (1 - ((N2 - N1)/(D2-D1)))*100
 		REM WScript.Echo "% Processor Time=" , Round(PercentProcessorTime,2)
 	Next
+
+	pppAvg=pppAvg/count: pptAvg=pptAvg/count: putAvg=putAvg/count: pitAvg=pitAvg/count
+	WSCript.Echo FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) & sep & cName & sep & pppAvg & sep & putAvg & sep & pptAvg & sep & pitAvg
 	
 End Sub	
-
 
 strComputer = "."
 Set WshNetwork = WScript.CreateObject("WScript.Network")
 
- sep = ","
- numOfSamples=4
- intervalSecs=15
- numberOfIntervals=3
+cName = WshNetwork.ComputerName
+sep = ","
+numOfSamples=5
+intervalSecs=15
+numberOfIntervals=1
 
-For i = 1 to 3
-
+For i = 1 to numberOfIntervals
 	getSamples(numOfSamples)
-	WScript.Sleep(15000)
-	getSamples(numOfSamples)
+	'WScript.Sleep(15000)
+	'getSamples(numOfSamples)
 Next 
-	
