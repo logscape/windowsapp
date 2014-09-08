@@ -142,16 +142,6 @@
       	<script>diskPerf.vbs</script>
     </Service>
    <Service>
-      	<name>Win_SystemLoad</name>
-		<resourceSelection>osName contains WINDOWS</resourceSelection>
-      	<fork>false</fork>
-      	<background>true</background>
-		<instanceCount>-1</instanceCount>
-		<pauseSeconds>20</pauseSeconds>
-      	<script>load.vbs</script>
-    </Service>
-
-   <Service>
       	<name>Win_Network</name>
 		<resourceSelection>osName contains WINDOWS</resourceSelection>
       	<fork>false</fork>
