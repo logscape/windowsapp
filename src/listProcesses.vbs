@@ -1,3 +1,81 @@
+Function pad(num)
+	if num < 10 then
+		num="0"&num
+	end if 
+	pad=num
+End Function
+
+Function formatDate(dt)
+	ss=pad(Second(dt))
+	mm=pad(Minute(dt))
+	hh=pad(hour(dt))
+	dd=pad(Day(dt))
+	MM=pad(Month(dt))
+	YY=Year(dt)
+	formatDate=dd&"/"&MM&"/"&YY&" "&hh&":"&mm&":"&ss
+End Function
+
+Function getProperty(properties,key,defaultValue)
+	Dim value
+	If properties.Exists(key) = true Then
+		value=properties(key)
+	else
+		value=defaultValue
+	End If
+	getProperty=value
+End Function
+
+'----------------------------------------------------------------------------------------------------------------------------
+'Functions Processing Section
+'----------------------------------------------------------------------------------------------------------------------------
+'Name       : getPropertiesFromArguments -> Creates a Dictionary from logscape properties
+'Parameters : None          ->
+'Return     : Dictionary    ->
+'----------------------------------------------------------------------------------------------------------------------------
+Function getPropertiesFromArguments()
+	Dim i
+	Dim properties
+	Set properties=CreateObject("Scripting.Dictionary")
+	For i=0 to WScript.Arguments.Count() - 1 
+
+		If InStr(WScript.Arguments(i),"=") Then
+			Dim elems
+			elems=Split(WScript.Arguments(i),"=")
+			properties.Add elems(0),elems(1)
+		End If 
+	Next 
+	Set getPropertiesFromArguments=properties 
+End Function
+
+
+
+Function filterProcessName(excludes,code)
+	Dim res
+	res=0
+	excludes=LCase(excludes)
+	code=LCase(code)
+	If InStr(excludes,","&code) > 0 Then
+		res=1
+	End If
+	
+	If InStr(excludes,code&",") > 0 Then
+		res=1
+	End If
+	
+	If excludes=CStr(code) Then 
+		
+		res=1
+		
+	End If 
+	
+	filterProcessName=res
+End Function
+
+Dim properties
+Set properties = getPropertiesFromArguments()
+doNotFilter=getProperty(properties,"doNotFilter","")
+	
+
 strComputer = "."
 Set WshNetwork = WScript.CreateObject("WScript.Network")
 
@@ -106,8 +184,8 @@ For Each objProcess In colProcess
 	WScript.Sleep(1)
 Next
 
-timestamp = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) 
-
+REM timestamp = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) 
+timestamp = formatDate(Now())
 For Each processId In TimeStamp1.Keys
 
 	If processId <> 0 AND ProcessPriority.Item(processId) <> "" Then
@@ -131,14 +209,24 @@ For Each processId In TimeStamp1.Keys
 		Else
 			MemPct = Round(WorkingSetPrivate.Item(processId) / TotalMemory * UsedMem, 2)
 		End If
-		
+
+		procName=ProcessName.Item(processId)
+
 		if ProcPct > 0.05 Then 
-			WSCript.Echo timestamp & sep & host _
-			& sep & ProcessName.Item(processId) _
-			& sep & processId & sep & ProcPct _
-			& sep & MemPct & sep & ProcessPriority.Item(processId) _
-			& sep & ProcessOwner.Item(processId)
-'			& sep & ProcessCmdLine.Item(processId)
+				WSCript.Echo timestamp & sep & host _
+				& sep & ProcessName.Item(processId) _
+				& sep & processId & sep & ProcPct _
+				& sep & MemPct & sep & ProcessPriority.Item(processId) _
+				& sep & ProcessOwner.Item(processId)
+	'			& sep & ProcessCmdLine.Item(processId)
+		elseif filterProcessName(doNotFilter,procName)	> 0 Then
+				WSCript.Echo timestamp & sep & host _
+				& sep & ProcessName.Item(processId) _
+				& sep & processId & sep & ProcPct _
+				& sep & MemPct & sep & ProcessPriority.Item(processId) _
+				& sep & ProcessOwner.Item(processId)
+	'			& sep & ProcessCmdLine.Item(processId)
+		else
 		End If
 	End If
 	

@@ -1,3 +1,23 @@
+
+Function pad(num)
+	if num < 10 then
+		num="0"&num
+	end if 
+	pad=num
+End Function
+
+Function formatDate(dt)
+	ss=pad(Second(dt))
+	mm=pad(Minute(dt))
+	hh=pad(hour(dt))
+	dd=pad(Day(dt))
+	MM=pad(Month(dt))
+	YY=Year(dt)
+	formatDate=dd&"/"&MM&"/"&YY&" "&hh&":"&mm&":"&ss
+End Function
+
+
+
 strComputer = "."
 Set WshNetwork = WScript.CreateObject("WScript.Network")
 
@@ -105,7 +125,8 @@ For Each objProcess In colProcess
 '	WScript.Sleep(10)
 Next
 
-timestamp = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) 
+REM timestamp = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) 
+timestamp = formatDate(Now())
 
 For Each processId In TimeStamp1.Keys
 

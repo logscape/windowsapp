@@ -21,7 +21,7 @@
         <background>true</background>
         <instanceCount>-1</instanceCount>
         <pauseSeconds>60</pauseSeconds>
-        <script>QueryEventLogs.vbs System</script>
+        <script>QueryEventLogs.vbs eventLog=System</script>
     </Service>
 
 
@@ -32,7 +32,7 @@
         <background>true</background>
     <instanceCount>-1</instanceCount>
     <pauseSeconds>60</pauseSeconds>
-        <script>QueryEventLogs.vbs System</script>
+        <script>QueryEventLogs.vbs eventLog=System</script>
     </Service>
  
 
@@ -43,7 +43,7 @@
        	<background>true</background>
 	     	<instanceCount>-1</instanceCount>
 		    <pauseSeconds>60</pauseSeconds>
-      	<script>QueryEventLogs.vbs Application</script>
+      	<script>QueryEventLogs.vbs eventLog=Application</script>
     </Service>
 
      <Service>
@@ -53,7 +53,7 @@
         <background>true</background>
         <instanceCount>-1</instanceCount>
         <pauseSeconds>60</pauseSeconds>
-        <script>QueryEventLogs.vbs Application</script>
+        <script>QueryEventLogs.vbs eventLog=Application</script>
     </Service>
 
      <Service>
@@ -63,7 +63,7 @@
       	<background>true</background>
 		<instanceCount>-1</instanceCount>
 		<pauseSeconds>60</pauseSeconds>
-      	<script>QueryEventLogs.vbs Security</script>
+      	<script>QueryEventLogs.vbs eventLog=Security</script>
     </Service>
 
      <Service>
@@ -73,7 +73,7 @@
         <background>true</background>
         <instanceCount>-1</instanceCount>
         <pauseSeconds>60</pauseSeconds>
-        <script>QueryEventLogs.vbs Security</script>
+        <script>QueryEventLogs.vbs eventLog=Security</script>
     </Service>
 
  
@@ -141,6 +141,16 @@
 		<pauseSeconds>60</pauseSeconds>
       	<script>diskPerf.vbs</script>
     </Service>
+   <Service>
+      	<name>Win_SystemLoad</name>
+		<resourceSelection>osName contains WINDOWS</resourceSelection>
+      	<fork>false</fork>
+      	<background>true</background>
+		<instanceCount>-1</instanceCount>
+		<pauseSeconds>20</pauseSeconds>
+      	<script>load.vbs</script>
+    </Service>
+
    <Service>
       	<name>Win_Network</name>
 		<resourceSelection>osName contains WINDOWS</resourceSelection>

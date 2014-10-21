@@ -67,7 +67,8 @@ Sub log(data,pids)
 		If filterCondition(objItem) = True Then
 	'		line = line  &   objItem.Name & sep
 			if pidExists(pids,objItem.IDProcess) Then
-				line = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4)  & sep 
+				REM line = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4)  & sep 
+				line = formatDate(Now())& sep 
 				line = line & objItem.Name & sep 
 				line = line & objItem.IDProcess & sep 
 				line = line & objItem.PrivateBytes & sep 

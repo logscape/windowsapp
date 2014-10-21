@@ -1,6 +1,24 @@
 strComputer = "."
 sep = ","
 
+Function pad(num)
+	if num < 10 then
+		num="0"&num
+	end if 
+	pad=num
+End Function
+
+Function formatDate(dt)
+	ss=pad(Second(dt))
+	mm=pad(Minute(dt))
+	hh=pad(hour(dt))
+	dd=pad(Day(dt))
+	MM=pad(Month(dt))
+	YY=Year(dt)
+	formatDate=dd&"/"&MM&"/"&YY&" "&hh&":"&mm&":"&ss
+End Function
+
+
 Set WshNetwork = WScript.CreateObject("WScript.Network")
 host = WshNetwork.ComputerName
 
@@ -65,7 +83,8 @@ For Each objProcess in colProcess
 	'WScript.Sleep(1)
 Next
 
-timestamp = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4)
+REM timestamp = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4)
+timestamp = formatDate(Now())
 On Error Resume Next
 For Each key In TimeStamp1.Keys
 	CurrentBandWidth = 1000*round(0.001*CurrentBW.Item(key)/(1024*1024),2)

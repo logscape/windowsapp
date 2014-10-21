@@ -6,6 +6,23 @@ Dim pppAvg, pptAvg, putAvg, pitAvg
 Dim cName, sep, strComputer
 Dim numOfSamples, intervalSecs, numberOfIntervals
 
+Function pad(num)
+	if num < 10 then
+		num="0"&num
+	end if 
+	pad=num
+End Function
+
+Function formatDate(dt)
+	ss=pad(Second(dt))
+	mm=pad(Minute(dt))
+	hh=pad(hour(dt))
+	dd=pad(Day(dt))
+	MM=pad(Month(dt))
+	YY=Year(dt)
+	formatDate=dd&"/"&MM&"/"&YY&" "&hh&":"&mm&":"&ss
+End Function
+
 sub getSamples(count)
 	Set objService = GetObject( _
 		"Winmgmts:{impersonationlevel=impersonate}!\Root\Cimv2")
@@ -87,7 +104,8 @@ sub getSamples(count)
 	Next
 
 	pppAvg=pppAvg/count: pptAvg=pptAvg/count: putAvg=putAvg/count: pitAvg=pitAvg/count
-	WSCript.Echo FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) & sep & cName & sep & pppAvg & sep & putAvg & sep & pptAvg & sep & pitAvg
+	REM WSCript.Echo FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) & sep & cName & sep & pppAvg & sep & putAvg & sep & pptAvg & sep & pitAvg
+	WScript.Echo formatDate(Now()) & " " & FormatDateTime(Now(),4) & sep & cName & sep & pppAvg & sep & putAvg & sep & pptAvg & sep & pitAvg
 	
 End Sub	
 

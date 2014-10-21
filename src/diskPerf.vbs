@@ -1,3 +1,21 @@
+Function pad(num)
+	if num < 10 then
+		num="0"&num
+	end if 
+	pad=num
+End Function
+
+Function formatDate(dt)
+	ss=pad(Second(dt))
+	mm=pad(Minute(dt))
+	hh=pad(hour(dt))
+	dd=pad(Day(dt))
+	MM=pad(Month(dt))
+	YY=Year(dt)
+	formatDate=dd&"/"&MM&"/"&YY&" "&hh&":"&mm&":"&ss
+End Function
+
+
 Function filterCondition(obj)
 	ret = True
 	if obj.Name = "_Total"  Then
@@ -53,7 +71,8 @@ Sub log(data)
 		If filterCondition(objItem) = True Then
 			line = line & objItem.Name & sep
 			'if pidExists(pids,objItem.IDProcess) Then
-			line = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) & sep 
+			REM line = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) & sep 
+			line = formatDate(Now())
 			deviceId= objItem.Name
 			line = line & replace(deviceId," ","_") & sep 
 			'ak-- average values over AvgN*SleepSec sec interval, taking AvgN readings
