@@ -18,9 +18,9 @@ Function formatDate(dt)
 	mm=pad(Minute(dt))
 	hh=pad(hour(dt))
 	dd=pad(Day(dt))
-	MM=pad(Month(dt))
+	mth=pad(Month(dt))
 	YY=Year(dt)
-	formatDate=dd&"/"&MM&"/"&YY&" "&hh&":"&mm&":"&ss
+	formatDate=dd&"/"&mth&"/"&YY&" "&hh&":"&mm&":"&ss
 End Function
 
 sub getSamples(count)
@@ -105,7 +105,7 @@ sub getSamples(count)
 
 	pppAvg=pppAvg/count: pptAvg=pptAvg/count: putAvg=putAvg/count: pitAvg=pitAvg/count
 	REM WSCript.Echo FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) & sep & cName & sep & pppAvg & sep & putAvg & sep & pptAvg & sep & pitAvg
-	WScript.Echo formatDate(Now()) & " " & FormatDateTime(Now(),4) & sep & cName & sep & pppAvg & sep & putAvg & sep & pptAvg & sep & pitAvg
+	WScript.Echo formatDate(Now())  & sep & cName & sep & pppAvg & sep & putAvg & sep & pptAvg & sep & pitAvg
 	
 End Sub	
 

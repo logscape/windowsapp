@@ -10,9 +10,9 @@ Function formatDate(dt)
 	mm=pad(Minute(dt))
 	hh=pad(hour(dt))
 	dd=pad(Day(dt))
-	MM=pad(Month(dt))
+	mth=pad(Month(dt))
 	YY=Year(dt)
-	formatDate=dd&"/"&MM&"/"&YY&" "&hh&":"&mm&":"&ss
+	formatDate=dd&"/"&mth&"/"&YY&" "&hh&":"&mm&":"&ss
 End Function
 
 
@@ -72,7 +72,7 @@ Sub log(data)
 			line = line & objItem.Name & sep
 			'if pidExists(pids,objItem.IDProcess) Then
 			REM line = FormatDateTime(Now(),2) & " " & FormatDateTime(Now(),4) & sep 
-			line = formatDate(Now())
+			line = formatDate(Now()) & sep 
 			deviceId= objItem.Name
 			line = line & replace(deviceId," ","_") & sep 
 			'ak-- average values over AvgN*SleepSec sec interval, taking AvgN readings
